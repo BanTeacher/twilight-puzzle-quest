@@ -75,6 +75,7 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
   const [stage, setStage] = useState(0);
   const [typingDone, setTypingDone] = useState(false);
   const paperRef = useRef<HTMLDivElement>(null);
+  const envelopeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const FONT_HREF =
@@ -104,7 +105,21 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
       }, 3000)
     );
     timers.push(setTimeout(() => setStage(4), 4400)); // wax drop
-    timers.push(setTimeout(() => setStage(5), 5400)); // wax break
+    timers.push(
+      setTimeout(() => {
+        setStage(5); // wax break
+        if (envelopeRef.current) {
+          envelopeRef.current.style.animation =
+            "ec-envelope-shake 600ms ease-in-out";
+          setTimeout(() => {
+            if (envelopeRef.current) {
+              envelopeRef.current.style.animation = "";
+              envelopeRef.current.style.transform = "translateX(-50%)";
+            }
+          }, 600);
+        }
+      }, 5400)
+    );
     timers.push(setTimeout(() => setStage(6), 6600)); // scene out
     timers.push(setTimeout(() => onComplete(), 7200));
 
@@ -126,10 +141,6 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
       dy: Math.sin(angle) * dist,
     };
   });
-
-  // Envelope shake at stage 5
-  const envelopeAnim =
-    stage === 5 ? "ec-envelope-shake 600ms ease-in-out" : undefined;
 
   // Flap state
   // Stage 1-2: open. Stage 3: closing. Stage 4+: closed.
