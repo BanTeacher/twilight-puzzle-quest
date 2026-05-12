@@ -44,13 +44,14 @@ const KEYFRAMES = `
   80% { transform: translateX(3px); }
 }
 @keyframes ec-envelope-shake {
-  0%, 100% { transform: translateX(0); }
-  14% { transform: translateX(-8px); }
-  28% { transform: translateX(8px); }
-  42% { transform: translateX(-6px); }
-  56% { transform: translateX(6px); }
-  70% { transform: translateX(-4px); }
-  84% { transform: translateX(4px); }
+  0%   { transform: translateX(0); }
+  15%  { transform: translateX(-8px); }
+  30%  { transform: translateX(+8px); }
+  45%  { transform: translateX(-6px); }
+  60%  { transform: translateX(+6px); }
+  75%  { transform: translateX(-3px); }
+  90%  { transform: translateX(+3px); }
+  100% { transform: translateX(0); }
 }
 @keyframes ec-wax-left {
   0% { transform: translate(-50%, -50%) translateX(0) rotate(0); opacity: 1; }
