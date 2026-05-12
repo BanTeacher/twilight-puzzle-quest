@@ -334,18 +334,34 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
             top: "calc(80px + 160px)",
             left: "50%",
             transform: "translate(-50%, 0) scale(1)",
-            width: "80px",
-            height: "80px",
+            width: "90px",
+            height: "90px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle at 35% 35%, #b22222, #8b0000 55%, #5a0000)",
+              "radial-gradient(circle at 35% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
+            clipPath:
+              "polygon(50% 0%, 61% 5%, 73% 3%, 82% 10%, 90% 18%, 95% 30%, 98% 43%, 95% 56%, 90% 67%, 82% 76%, 73% 83%, 61% 88%, 50% 90%, 39% 88%, 27% 83%, 18% 76%, 10% 67%, 5% 56%, 2% 43%, 5% 30%, 10% 18%, 18% 10%, 27% 3%, 39% 5%)",
             zIndex: 30,
             animation:
               "ec-wax-drop 1000ms cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards, ec-stamp-shake 250ms ease-in-out 1000ms, ec-wax-pulse 600ms ease-in-out 1250ms",
             boxShadow:
-              "0 0 30px rgba(139,0,0,0.7), inset 0 -8px 16px rgba(0,0,0,0.5)",
+              "0 0 0 4px #9b1111, 0 0 0 7px #7a0000, inset 0 3px 8px rgba(255,100,100,0.3), inset 0 -3px 8px rgba(0,0,0,0.5), 0 4px 16px rgba(180,0,0,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-        />
+        >
+          <span
+            style={{
+              fontSize: "2rem",
+              color: "#ffcdd2",
+              textShadow: "0 1px 3px rgba(0,0,0,0.6)",
+              lineHeight: 1,
+            }}
+          >
+            &#10022;
+          </span>
+        </div>
       )}
 
       {/* cracked seal (stage 5) */}
@@ -367,11 +383,11 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
               position: "absolute",
               top: 0,
               left: 0,
-              width: "80px",
-              height: "80px",
+              width: "90px",
+              height: "90px",
               borderRadius: "50%",
               background:
-                "radial-gradient(circle at 35% 35%, #b22222, #8b0000 55%, #5a0000)",
+                "radial-gradient(circle at 35% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
               clipPath: "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
               transform: "translate(-50%, -50%)",
               animation: "ec-wax-left 500ms ease-out forwards",
@@ -384,11 +400,11 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
               position: "absolute",
               top: 0,
               left: 0,
-              width: "80px",
-              height: "80px",
+              width: "90px",
+              height: "90px",
               borderRadius: "50%",
               background:
-                "radial-gradient(circle at 65% 35%, #b22222, #8b0000 55%, #5a0000)",
+                "radial-gradient(circle at 65% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
               clipPath: "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
               transform: "translate(-50%, -50%)",
               animation: "ec-wax-right 500ms ease-out forwards",
