@@ -264,6 +264,7 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
       {/* envelope */}
       <div
         id="envelope"
+        ref={envelopeRef}
         style={{
           position: "absolute",
           left: "50%",
@@ -272,7 +273,6 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
           width: "480px",
           height: "320px",
           zIndex: 10,
-          animation: envelopeAnim,
           perspective: "1200px",
         }}
       >
