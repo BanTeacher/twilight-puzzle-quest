@@ -12,6 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import EnvelopeCinematic from "@/components/EnvelopeCinematic";
 
 const ALLOWED_NAMES = ["andrea", "beatrice", "charles", "dominic"];
 
@@ -108,14 +109,16 @@ const Answer = () => {
     const displayName = trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
     setSubmittedName(displayName);
     setIsSubmitting(true);
+    // Cinematic component will call onComplete after the full sequence (~7.4s)
+    // and we transition to the result then.
+  };
 
-    // After name flies into envelope, transition to opened letter
-    setTimeout(() => {
-      setIsCorrect(correct);
-      setIsOpening(true);
-      setIsOpen(true);
-      setIsSubmitting(false);
-    }, 1800);
+  const handleCinematicComplete = () => {
+    const correct = submittedName.toLowerCase() === "charles";
+    setIsCorrect(correct);
+    setIsOpening(true);
+    setIsOpen(true);
+    setIsSubmitting(false);
   };
 
   const handleWarningClose = () => {
@@ -188,7 +191,9 @@ const Answer = () => {
       <div className="max-w-4xl w-full space-y-8 animate-fade-in relative z-10">
         {/* Envelope container */}
         <div className="flex flex-col items-center justify-center space-y-8">
-          {!isOpen ? (
+          {isSubmitting ? (
+            <EnvelopeCinematic name={submittedName} onComplete={handleCinematicComplete} />
+          ) : !isOpen ? (
             <>
               {/* Instruction text */}
               <div className="text-center space-y-3 animate-fade-in">
@@ -216,21 +221,10 @@ const Answer = () => {
 
               {/* Sealed envelope */}
               <div 
-                onClick={isSubmitting ? undefined : handleEnvelopeClick}
-                className={`relative transition-all duration-500 ${isSubmitting ? 'cursor-default animate-pulse-slow' : userAnswer.trim() ? 'cursor-pointer hover:scale-105 animate-shake' : 'cursor-not-allowed opacity-50'}`}
+                onClick={handleEnvelopeClick}
+                className={`relative transition-all duration-500 ${userAnswer.trim() ? 'cursor-pointer hover:scale-105 animate-shake' : 'cursor-not-allowed opacity-50'}`}
                 style={{ perspective: "1000px" }}
               >
-                {/* Flying name overlay */}
-                {isSubmitting && (
-                  <div
-                    className="absolute left-1/2 top-1/2 z-30 pointer-events-none animate-name-into-envelope"
-                    style={{ transform: "translate(-50%, -50%)" }}
-                  >
-                    <span className="text-5xl md:text-7xl font-black text-blood drop-shadow-[0_0_30px_rgba(139,0,0,1)] whitespace-nowrap">
-                      {submittedName}
-                    </span>
-                  </div>
-                )}
                 {/* Envelope back */}
                 <div className={`relative w-[500px] h-[340px] md:w-[700px] md:h-[460px] bg-gradient-to-br from-parchment via-parchment-dark to-parchment rounded-sm shadow-[0_0_80px_rgba(0,0,0,1),0_0_120px_rgba(139,0,0,0.5)] border-2 border-parchment-dark/50 ${isOpening ? "animate-envelope-open" : ""}`}>
                   {/* Envelope flap closed - triangle */}
