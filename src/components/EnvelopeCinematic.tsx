@@ -44,13 +44,14 @@ const KEYFRAMES = `
   80% { transform: translateX(3px); }
 }
 @keyframes ec-envelope-shake {
-  0%, 100% { transform: translateX(0); }
-  14% { transform: translateX(-8px); }
-  28% { transform: translateX(8px); }
-  42% { transform: translateX(-6px); }
-  56% { transform: translateX(6px); }
-  70% { transform: translateX(-4px); }
-  84% { transform: translateX(4px); }
+  0%   { transform: translateX(0); }
+  15%  { transform: translateX(-8px); }
+  30%  { transform: translateX(+8px); }
+  45%  { transform: translateX(-6px); }
+  60%  { transform: translateX(+6px); }
+  75%  { transform: translateX(-3px); }
+  90%  { transform: translateX(+3px); }
+  100% { transform: translateX(0); }
 }
 @keyframes ec-wax-left {
   0% { transform: translate(-50%, -50%) translateX(0) rotate(0); opacity: 1; }
@@ -74,6 +75,7 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
   const [stage, setStage] = useState(0);
   const [typingDone, setTypingDone] = useState(false);
   const paperRef = useRef<HTMLDivElement>(null);
+  const envelopeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const FONT_HREF =
@@ -103,7 +105,21 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
       }, 3000)
     );
     timers.push(setTimeout(() => setStage(4), 4400)); // wax drop
-    timers.push(setTimeout(() => setStage(5), 5400)); // wax break
+    timers.push(
+      setTimeout(() => {
+        setStage(5); // wax break
+        if (envelopeRef.current) {
+          envelopeRef.current.style.animation =
+            "ec-envelope-shake 600ms ease-in-out";
+          setTimeout(() => {
+            if (envelopeRef.current) {
+              envelopeRef.current.style.animation = "";
+              envelopeRef.current.style.transform = "translateX(-50%)";
+            }
+          }, 600);
+        }
+      }, 5400)
+    );
     timers.push(setTimeout(() => setStage(6), 6600)); // scene out
     timers.push(setTimeout(() => onComplete(), 7200));
 
@@ -125,10 +141,6 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
       dy: Math.sin(angle) * dist,
     };
   });
-
-  // Envelope shake at stage 5
-  const envelopeAnim =
-    stage === 5 ? "ec-envelope-shake 600ms ease-in-out" : undefined;
 
   // Flap state
   // Stage 1-2: open. Stage 3: closing. Stage 4+: closed.
@@ -252,6 +264,7 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
       {/* envelope */}
       <div
         id="envelope"
+        ref={envelopeRef}
         style={{
           position: "absolute",
           left: "50%",
@@ -260,7 +273,6 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
           width: "480px",
           height: "320px",
           zIndex: 10,
-          animation: envelopeAnim,
           perspective: "1200px",
         }}
       >
@@ -322,18 +334,34 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
             top: "calc(80px + 160px)",
             left: "50%",
             transform: "translate(-50%, 0) scale(1)",
-            width: "80px",
-            height: "80px",
+            width: "90px",
+            height: "90px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle at 35% 35%, #b22222, #8b0000 55%, #5a0000)",
+              "radial-gradient(circle at 35% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
+            clipPath:
+              "polygon(50% 0%, 61% 5%, 73% 3%, 82% 10%, 90% 18%, 95% 30%, 98% 43%, 95% 56%, 90% 67%, 82% 76%, 73% 83%, 61% 88%, 50% 90%, 39% 88%, 27% 83%, 18% 76%, 10% 67%, 5% 56%, 2% 43%, 5% 30%, 10% 18%, 18% 10%, 27% 3%, 39% 5%)",
             zIndex: 30,
             animation:
               "ec-wax-drop 1000ms cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards, ec-stamp-shake 250ms ease-in-out 1000ms, ec-wax-pulse 600ms ease-in-out 1250ms",
             boxShadow:
-              "0 0 30px rgba(139,0,0,0.7), inset 0 -8px 16px rgba(0,0,0,0.5)",
+              "0 0 0 4px #9b1111, 0 0 0 7px #7a0000, inset 0 3px 8px rgba(255,100,100,0.3), inset 0 -3px 8px rgba(0,0,0,0.5), 0 4px 16px rgba(180,0,0,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-        />
+        >
+          <span
+            style={{
+              fontSize: "2rem",
+              color: "#ffcdd2",
+              textShadow: "0 1px 3px rgba(0,0,0,0.6)",
+              lineHeight: 1,
+            }}
+          >
+            &#10022;
+          </span>
+        </div>
       )}
 
       {/* cracked seal (stage 5) */}
@@ -355,11 +383,11 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
               position: "absolute",
               top: 0,
               left: 0,
-              width: "80px",
-              height: "80px",
+              width: "90px",
+              height: "90px",
               borderRadius: "50%",
               background:
-                "radial-gradient(circle at 35% 35%, #b22222, #8b0000 55%, #5a0000)",
+                "radial-gradient(circle at 35% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
               clipPath: "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
               transform: "translate(-50%, -50%)",
               animation: "ec-wax-left 500ms ease-out forwards",
@@ -372,11 +400,11 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
               position: "absolute",
               top: 0,
               left: 0,
-              width: "80px",
-              height: "80px",
+              width: "90px",
+              height: "90px",
               borderRadius: "50%",
               background:
-                "radial-gradient(circle at 65% 35%, #b22222, #8b0000 55%, #5a0000)",
+                "radial-gradient(circle at 65% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
               clipPath: "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
               transform: "translate(-50%, -50%)",
               animation: "ec-wax-right 500ms ease-out forwards",
