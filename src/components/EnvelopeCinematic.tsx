@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import waxSealImg from "@/assets/wax-seal.png";
 
 interface Props {
   name: string;
@@ -28,13 +29,14 @@ const KEYFRAMES = `
   50%, 100% { opacity: 0; }
 }
 @keyframes ec-wax-drop {
-  0% { transform: translate(-50%, -80px) scale(2); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+  0%   { transform: translate(-50%, -120px) scale(2.2) rotate(-8deg); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { transform: translate(-50%, 6px) scale(0.92) rotate(2deg); opacity: 1; }
+  100% { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: 1; }
 }
 @keyframes ec-wax-pulse {
-  0%, 100% { box-shadow: 0 0 30px rgba(139,0,0,0.6), inset 0 -8px 16px rgba(0,0,0,0.5); }
-  50% { box-shadow: 0 0 70px rgba(139,0,0,1), inset 0 -8px 16px rgba(0,0,0,0.5); }
+  0%, 100% { filter: drop-shadow(0 6px 12px rgba(139,0,0,0.55)); }
+  50%      { filter: drop-shadow(0 0 28px rgba(220,30,30,0.95)); }
 }
 @keyframes ec-stamp-shake {
   0%, 100% { transform: translateX(0); }
@@ -53,17 +55,11 @@ const KEYFRAMES = `
   90%  { transform: translateX(+3px); }
   100% { transform: translateX(0); }
 }
-@keyframes ec-wax-left {
-  0% { transform: translate(-50%, -50%) translateX(0) rotate(0); opacity: 1; }
-  100% { transform: translate(-50%, -50%) translateX(-40px) rotate(-20deg); opacity: 0; }
-}
-@keyframes ec-wax-right {
-  0% { transform: translate(-50%, -50%) translateX(0) rotate(0); opacity: 1; }
-  100% { transform: translate(-50%, -50%) translateX(40px) rotate(20deg); opacity: 0; }
-}
-@keyframes ec-particle {
-  0% { transform: translate(-50%, -50%); opacity: 1; }
-  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))); opacity: 0; }
+@keyframes ec-envelope-fly {
+  0%   { transform: translateX(-50%) translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 1; }
+  20%  { transform: translateX(-50%) translate3d(20px, -30px, 0) rotate(6deg) scale(1.02); opacity: 1; }
+  60%  { transform: translateX(-50%) translate3d(220px, -240px, 0) rotate(22deg) scale(0.7); opacity: 0.85; }
+  100% { transform: translateX(-50%) translate3d(520px, -560px, 0) rotate(38deg) scale(0.25); opacity: 0; }
 }
 @keyframes ec-scene-out {
   0% { opacity: 1; }
@@ -107,16 +103,11 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
     timers.push(setTimeout(() => setStage(4), 4400)); // wax drop
     timers.push(
       setTimeout(() => {
-        setStage(5); // wax break
+        setStage(5); // envelope flies away
         if (envelopeRef.current) {
+          // Brief stamp shake, then fly away
           envelopeRef.current.style.animation =
-            "ec-envelope-shake 600ms ease-in-out";
-          setTimeout(() => {
-            if (envelopeRef.current) {
-              envelopeRef.current.style.animation = "";
-              envelopeRef.current.style.transform = "translateX(-50%)";
-            }
-          }, 600);
+            "ec-envelope-shake 300ms ease-in-out, ec-envelope-fly 1100ms cubic-bezier(0.5, 0, 0.75, 0) 300ms forwards";
         }
       }, 5400)
     );
@@ -130,17 +121,6 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
   }, [name, onComplete]);
 
   const letters = name.split("");
-
-  // particle directions
-  const particles = Array.from({ length: 6 }).map((_, i) => {
-    const angle = (i * 60) * (Math.PI / 180);
-    const dist = 70;
-    return {
-      key: i,
-      dx: Math.cos(angle) * dist,
-      dy: Math.sin(angle) * dist,
-    };
-  });
 
   // Flap state
   // Stage 1-2: open. Stage 3: closing. Stage 4+: closed.
@@ -165,21 +145,29 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
   }
 
   const showPaper = stage >= 1 && stage <= 3;
-  const showSeal = stage >= 4 && stage < 5;
-  const showCracked = stage >= 5;
+  const showSeal = stage >= 4;
 
   return (
     <div
-      id="scene"
-      className="relative"
       style={{
-        width: "480px",
-        height: "440px",
-        animation:
-          stage === 6 ? "ec-scene-out 400ms ease-out forwards" : undefined,
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <style>{KEYFRAMES}</style>
+      <div
+        id="scene"
+        className="relative"
+        style={{
+          width: "480px",
+          height: "440px",
+          margin: "0 auto",
+          animation:
+            stage === 6 ? "ec-scene-out 400ms ease-out forwards" : undefined,
+        }}
+      >
+        <style>{KEYFRAMES}</style>
 
       {/* letter paper - in front of envelope initially */}
       {showPaper && (
@@ -323,115 +311,30 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
             ...flapStyle,
           }}
         />
+
+        {/* wax seal image - lives inside envelope so it flies away together */}
+        {showSeal && (
+          <img
+            src={waxSealImg}
+            alt=""
+            id="wax-seal"
+            style={{
+              position: "absolute",
+              top: "160px",
+              left: "50%",
+              transform: "translate(-50%, 0) scale(1)",
+              width: "140px",
+              height: "140px",
+              zIndex: 30,
+              pointerEvents: "none",
+              userSelect: "none",
+              animation:
+                "ec-wax-drop 1000ms cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards, ec-stamp-shake 250ms ease-in-out 1000ms, ec-wax-pulse 900ms ease-in-out 1250ms",
+            }}
+          />
+        )}
       </div>
-
-      {/* wax seal solid (stage 4) */}
-      {showSeal && (
-        <div
-          id="wax-seal"
-          style={{
-            position: "absolute",
-            top: "calc(80px + 160px)",
-            left: "50%",
-            transform: "translate(-50%, 0) scale(1)",
-            width: "90px",
-            height: "90px",
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle at 35% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
-            clipPath:
-              "polygon(50% 0%, 61% 5%, 73% 3%, 82% 10%, 90% 18%, 95% 30%, 98% 43%, 95% 56%, 90% 67%, 82% 76%, 73% 83%, 61% 88%, 50% 90%, 39% 88%, 27% 83%, 18% 76%, 10% 67%, 5% 56%, 2% 43%, 5% 30%, 10% 18%, 18% 10%, 27% 3%, 39% 5%)",
-            zIndex: 30,
-            animation:
-              "ec-wax-drop 1000ms cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards, ec-stamp-shake 250ms ease-in-out 1000ms, ec-wax-pulse 600ms ease-in-out 1250ms",
-            boxShadow:
-              "0 0 0 4px #9b1111, 0 0 0 7px #7a0000, inset 0 3px 8px rgba(255,100,100,0.3), inset 0 -3px 8px rgba(0,0,0,0.5), 0 4px 16px rgba(180,0,0,0.6)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "2rem",
-              color: "#ffcdd2",
-              textShadow: "0 1px 3px rgba(0,0,0,0.6)",
-              lineHeight: 1,
-            }}
-          >
-            &#10022;
-          </span>
-        </div>
-      )}
-
-      {/* cracked seal (stage 5) */}
-      {showCracked && (
-        <div
-          style={{
-            position: "absolute",
-            top: "calc(80px + 160px + 40px)",
-            left: "50%",
-            width: "0",
-            height: "0",
-            zIndex: 30,
-            pointerEvents: "none",
-          }}
-        >
-          {/* left half */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "90px",
-              height: "90px",
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle at 35% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
-              clipPath: "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
-              transform: "translate(-50%, -50%)",
-              animation: "ec-wax-left 500ms ease-out forwards",
-              boxShadow: "inset 0 -6px 14px rgba(0,0,0,0.5)",
-            }}
-          />
-          {/* right half */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "90px",
-              height: "90px",
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle at 65% 35%, #e8453c 0%, #b71c1c 40%, #7f0000 70%, #4a0000 100%)",
-              clipPath: "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
-              transform: "translate(-50%, -50%)",
-              animation: "ec-wax-right 500ms ease-out forwards",
-              boxShadow: "inset 0 -6px 14px rgba(0,0,0,0.5)",
-            }}
-          />
-          {/* particles */}
-          {particles.map((p) => (
-            <div
-              key={p.key}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "4px",
-                height: "4px",
-                borderRadius: "50%",
-                background: "#c0392b",
-                boxShadow: "0 0 6px rgba(192,57,43,0.8)",
-                ["--dx" as never]: `${p.dx}px`,
-                ["--dy" as never]: `${p.dy}px`,
-                animation: "ec-particle 500ms ease-out forwards",
-              }}
-            />
-          ))}
-        </div>
-      )}
+      </div>
     </div>
   );
 };
