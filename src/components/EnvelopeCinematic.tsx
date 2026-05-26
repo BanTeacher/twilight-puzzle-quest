@@ -29,37 +29,27 @@ const KEYFRAMES = `
   50%, 100% { opacity: 0; }
 }
 @keyframes ec-wax-drop {
-  0%   { transform: translate(-50%, -120px) scale(2.2) rotate(-8deg); opacity: 0; }
-  30%  { opacity: 1; }
-  70%  { transform: translate(-50%, 6px) scale(0.92) rotate(2deg); opacity: 1; }
+  0%   { transform: translate(-50%, -140px) scale(2.4) rotate(-8deg); opacity: 0; }
+  40%  { opacity: 1; }
+  75%  { transform: translate(-50%, 8px) scale(0.9) rotate(2deg); opacity: 1; }
+  88%  { transform: translate(-50%, -3px) scale(1.05) rotate(-1deg); opacity: 1; }
   100% { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: 1; }
 }
 @keyframes ec-wax-pulse {
   0%, 100% { filter: drop-shadow(0 6px 12px rgba(139,0,0,0.55)); }
   50%      { filter: drop-shadow(0 0 28px rgba(220,30,30,0.95)); }
 }
-@keyframes ec-stamp-shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-4px); }
-  40% { transform: translateX(4px); }
-  60% { transform: translateX(-3px); }
-  80% { transform: translateX(3px); }
-}
-@keyframes ec-envelope-shake {
-  0%   { transform: translateX(0); }
-  15%  { transform: translateX(-8px); }
-  30%  { transform: translateX(+8px); }
-  45%  { transform: translateX(-6px); }
-  60%  { transform: translateX(+6px); }
-  75%  { transform: translateX(-3px); }
-  90%  { transform: translateX(+3px); }
-  100% { transform: translateX(0); }
+@keyframes ec-envelope-thump {
+  0%   { transform: translateX(-50%) translateY(0) scale(1); }
+  30%  { transform: translateX(-50%) translateY(6px) scale(0.985); }
+  60%  { transform: translateX(-50%) translateY(-2px) scale(1.005); }
+  100% { transform: translateX(-50%) translateY(0) scale(1); }
 }
 @keyframes ec-envelope-fly {
-  0%   { transform: translateX(-50%) translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 1; }
-  20%  { transform: translateX(-50%) translate3d(20px, -30px, 0) rotate(6deg) scale(1.02); opacity: 1; }
-  60%  { transform: translateX(-50%) translate3d(220px, -240px, 0) rotate(22deg) scale(0.7); opacity: 0.85; }
-  100% { transform: translateX(-50%) translate3d(520px, -560px, 0) rotate(38deg) scale(0.25); opacity: 0; }
+  0%   { transform: translateX(-50%) translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  15%  { transform: translateX(-50%) translate(18px, -22px) rotate(5deg) scale(1.03); opacity: 1; }
+  55%  { transform: translateX(-50%) translate(260px, -260px) rotate(20deg) scale(0.7); opacity: 0.9; }
+  100% { transform: translateX(-50%) translate(640px, -640px) rotate(38deg) scale(0.2); opacity: 0; }
 }
 @keyframes ec-scene-out {
   0% { opacity: 1; }
@@ -105,14 +95,13 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
       setTimeout(() => {
         setStage(5); // envelope flies away
         if (envelopeRef.current) {
-          // Brief stamp shake, then fly away
           envelopeRef.current.style.animation =
-            "ec-envelope-shake 300ms ease-in-out, ec-envelope-fly 1100ms cubic-bezier(0.5, 0, 0.75, 0) 300ms forwards";
+            "ec-envelope-fly 1200ms cubic-bezier(0.5, 0, 0.75, 0) forwards";
         }
-      }, 5400)
+      }, 6200)
     );
-    timers.push(setTimeout(() => setStage(6), 6600)); // scene out
-    timers.push(setTimeout(() => onComplete(), 7200));
+    timers.push(setTimeout(() => setStage(6), 7200)); // scene out
+    timers.push(setTimeout(() => onComplete(), 7800));
 
     return () => {
       timers.forEach(clearTimeout);
