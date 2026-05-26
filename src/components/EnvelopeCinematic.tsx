@@ -318,7 +318,7 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
               pointerEvents: "none",
               userSelect: "none",
               animation:
-                "ec-wax-drop 1000ms cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards, ec-stamp-shake 250ms ease-in-out 1000ms, ec-wax-pulse 900ms ease-in-out 1250ms",
+              "ec-wax-drop 700ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards, ec-wax-pulse 1200ms ease-in-out 800ms 2",
             }}
           />
         )}
