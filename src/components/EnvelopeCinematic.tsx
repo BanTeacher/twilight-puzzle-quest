@@ -91,18 +91,19 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
         setStage(3);
       }, 3000)
     );
-    timers.push(setTimeout(() => setStage(4), 4400)); // wax drop
+    // Flap close: stage 3 starts at 3000ms, animation delay 700ms + 600ms duration => ~4300ms
+    timers.push(setTimeout(() => setStage(4), 4300)); // wax drop right after flap closes
     timers.push(
       setTimeout(() => {
         setStage(5); // envelope flies away
         if (envelopeRef.current) {
           envelopeRef.current.style.animation =
-            "ec-envelope-fly 1200ms cubic-bezier(0.5, 0, 0.75, 0) forwards";
+            "ec-envelope-fly 1400ms cubic-bezier(0.45, 0, 0.55, 1) forwards";
         }
-      }, 6200)
+      }, 6600) // pause ~1.4s after seal settles
     );
-    timers.push(setTimeout(() => setStage(6), 7200)); // scene out
-    timers.push(setTimeout(() => onComplete(), 7800));
+    timers.push(setTimeout(() => setStage(6), 7700)); // scene fade out
+    timers.push(setTimeout(() => onComplete(), 8200));
 
     return () => {
       timers.forEach(clearTimeout);
@@ -319,7 +320,7 @@ export const EnvelopeCinematic = ({ name, onComplete }: Props) => {
               pointerEvents: "none",
               userSelect: "none",
               animation:
-              "ec-wax-drop 700ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards, ec-wax-pulse 1200ms ease-in-out 800ms 2",
+              "ec-wax-drop 900ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards, ec-wax-pulse 1400ms ease-in-out 1000ms 1",
             }}
           />
         )}
