@@ -29,10 +29,10 @@ const KEYFRAMES = `
   50%, 100% { opacity: 0; }
 }
 @keyframes ec-wax-drop {
-  0%   { transform: translate(-50%, -140px) scale(2.4) rotate(-8deg); opacity: 0; }
-  40%  { opacity: 1; }
-  75%  { transform: translate(-50%, 8px) scale(0.9) rotate(2deg); opacity: 1; }
-  88%  { transform: translate(-50%, -3px) scale(1.05) rotate(-1deg); opacity: 1; }
+  0%   { transform: translate(-50%, -180px) scale(1.8) rotate(-6deg); opacity: 0; }
+  35%  { opacity: 1; }
+  70%  { transform: translate(-50%, 6px) scale(0.92) rotate(2deg); opacity: 1; }
+  85%  { transform: translate(-50%, -2px) scale(1.04) rotate(-1deg); opacity: 1; }
   100% { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: 1; }
 }
 @keyframes ec-wax-pulse {
@@ -47,9 +47,10 @@ const KEYFRAMES = `
 }
 @keyframes ec-envelope-fly {
   0%   { transform: translateX(-50%) translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-  15%  { transform: translateX(-50%) translate(18px, -22px) rotate(5deg) scale(1.03); opacity: 1; }
-  55%  { transform: translateX(-50%) translate(260px, -260px) rotate(20deg) scale(0.7); opacity: 0.9; }
-  100% { transform: translateX(-50%) translate(640px, -640px) rotate(38deg) scale(0.2); opacity: 0; }
+  10%  { transform: translateX(-50%) translate(0, 8px) rotate(-2deg) scale(1.02); opacity: 1; }
+  25%  { transform: translateX(-50%) translate(30px, -40px) rotate(6deg) scale(1.04); opacity: 1; }
+  60%  { transform: translateX(-50%) translate(300px, -320px) rotate(22deg) scale(0.65); opacity: 0.85; }
+  100% { transform: translateX(-50%) translate(720px, -720px) rotate(42deg) scale(0.15); opacity: 0; }
 }
 @keyframes ec-scene-out {
   0% { opacity: 1; }
