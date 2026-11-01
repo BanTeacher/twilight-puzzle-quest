@@ -7,19 +7,19 @@ const Testimony = () => {
 
   const testimonies = [
     {
-      name: "Andrea",
+      name: "Alfred",
       quote: "Dominic은 때로는 진실을 말하는 사람이 아니다."
     },
     {
-      name: "Beatrice",
+      name: "Brtiney",
       quote: "나는 거짓말을 하는 집사가 아니다."
     },
     {
-      name: "Charles",
+      name: "Chris",
       quote: "Andrea는 나를 싫어해서 나에 대한 모든 것을 거짓으로 말한다."
     },
     {
-      name: "Dominic",
+      name: "David",
       quote: "나는 항상 거짓말을 하는 사람이다."
     }
   ];
