@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import EnvelopeCinematic from "@/components/EnvelopeCinematic";
 
-const ALLOWED_NAMES = ["andrea", "beatrice", "charles", "dominic"];
+const ALLOWED_NAMES = ["alfred", "britney", "chris", "david"];
 
 const Answer = () => {
   const navigate = useNavigate();
@@ -104,8 +104,8 @@ const Answer = () => {
       return;
     }
 
-    const correct = trimmed.toLowerCase() === "charles";
-    // Capitalize properly (e.g., "charles" -> "Charles")
+    const correct = trimmed.toLowerCase() === "chris";
+    // Capitalize properly (e.g., "chris" -> "Chris")
     const displayName = trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
     setSubmittedName(displayName);
     setIsSubmitting(true);
@@ -114,7 +114,7 @@ const Answer = () => {
   };
 
   const handleCinematicComplete = () => {
-    const correct = submittedName.toLowerCase() === "charles";
+    const correct = submittedName.toLowerCase() === "chris";
     setIsCorrect(correct);
     setIsOpening(true);
     setIsOpen(true);
@@ -277,12 +277,12 @@ const Answer = () => {
                           
                           {/* Name appears third */}
                           <p className={`text-6xl md:text-8xl font-black text-blood drop-shadow-[0_0_30px_rgba(139,0,0,1)] my-6 md:my-8 py-4 transition-all duration-1000 ${showName ? "opacity-100 animate-pulse-slow" : "opacity-0"}`}>
-                            Charles
+                            Chris
                           </p>
                           
                           {/* Description appears last */}
                           <p className={`text-xl md:text-3xl text-secondary-foreground/90 italic mt-4 md:mt-6 leading-relaxed transition-all duration-1000 ${showDescription ? "opacity-100" : "opacity-0"}`}>
-                            Charles가 탈출의 열쇠를<br/>가지고 있습니다!
+                            Chris가 탈출의 열쇠를<br/>가지고 있습니다!
                           </p>
                         </div>
                       </div>
