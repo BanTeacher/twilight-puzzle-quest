@@ -66,7 +66,7 @@ const Ending = () => {
                   진실을 밝혀낸 당신의 추리력은 훌륭했습니다.
                 </p>
                 <p className="text-lg md:text-xl text-muted-foreground italic">
-                  Charles가 가진 열쇠로 무사히 탈출에 성공했습니다!
+                  Chris가 가진 열쇠로 무사히 탈출에 성공했습니다!
                 </p>
               </div>
             </div>
